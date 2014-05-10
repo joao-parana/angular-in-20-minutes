@@ -1,0 +1,7 @@
+[
+    {"id": 1, "orderDate": 7, "customerId": 1, "name":"Ted", "total": 5.996}, 
+    {"id": 2, "orderDate": 6, "customerId": 2, "name":"Michelle", "total": 10.994}, 
+    {"id": 3, "orderDate": 5, "customerId": 3, "name":"Zed", "total": 12.199}, 
+    {"id": 4, "orderDate": 1, "customerId": 4, "name":"Tina", "total": 11.234}, 
+    {"id": 5, "orderDate": 1, "customerId": 4, "name":"Tina", "total": 2.344}
+]

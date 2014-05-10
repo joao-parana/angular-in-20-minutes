@@ -1,0 +1,9 @@
+[
+    {"itemNo": 1, "qty": 7,  "productName":"Computer Sony", "value": 696}, 
+    {"itemNo": 2, "qty": 6,  "productName":"iPad", "value": 494}, 
+    {"itemNo": 3, "qty": 5,  "productName":"iPhone", "value": 1.199}, 
+    {"itemNo": 4, "qty": 1,  "productName":"Laptop Dell", "value": 234}, 
+    {"itemNo": 5, "qty": 1,  "productName":"Desktop IBM", "value": 2.34}, 
+    {"itemNo": 6, "qty": 1,  "productName":"iPod", "value": 1.124}, 
+    {"itemNo": 7, "qty": 1,  "productName":"Mac Mini", "value": 794}
+]

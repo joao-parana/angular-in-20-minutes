@@ -1,0 +1,6 @@
+[
+    {"itemNo": 1, "qty": 7,  "productName":"Computer Sony", "value": 696}, 
+    {"itemNo": 2, "qty": 6,  "productName":"iPad", "value": 494}, 
+    {"itemNo": 6, "qty": 1,  "productName":"iPod", "value": 1.124}, 
+    {"itemNo": 7, "qty": 1,  "productName":"Mac Mini", "value": 794}
+]

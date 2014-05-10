@@ -1,16 +1,29 @@
 <h3>Orders</h3>
-
 CustomerID: {{ customerId }}
 <br />
 <table>
-    <tr>
-        <td>Baseball</td>
-        <td>$9.99</td>
-    </tr>
-    <tr>
-        <td>Bat</td>
-        <td>$19.99</td>
-    </tr>
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Order ID</th>
+			<th>Total</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="order in orders |  orderBy:'orderDate'">
+			<td>{{ order.orderDate }}</td>
+			<td><a href="#/orders/{{ customerId }}/{{ order.id }}">{{
+					order.id }}</a></td>
+			<td>{{ order.total | currency }}</td>
+		</tr>
+	<tbody>
+	<tfoot>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tfoot>
 </table>
 
 <br />

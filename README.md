@@ -20,6 +20,7 @@
     <script src="js/angular.js"></script>
     <script src="js/angular-route.js"></script>
     <script src="js/angular-animation.js"></script>
+    <script src="app/app.js"></script>
     <script>
         var app = angular.module('demoApp',['ngRoute', 'ngAnimate']);
         
