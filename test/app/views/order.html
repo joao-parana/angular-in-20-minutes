@@ -1,0 +1,24 @@
+<h3>CustomerID: {{ customerId }} - OrderID {{ orderId }}</h3>
+<br />
+<table>
+	<thead>
+		<tr>
+			<th>Product Name</th>
+			<th>Qty</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="item in order |  orderBy:'itemNo'">
+			<td><a
+				href="#/item/{{ customerId }}/{{ orderId }}/{{ item.itemNo }}">{{
+					item.productName }}</a></td>
+			<td>{{ item.qty }}</td>
+			<td>{{ item.value | currency }}</td>
+		</tr>
+	</tbody>
+</table>
+
+<br />
+
+<a href="javascript:window.history.go(-1);">Back</a>

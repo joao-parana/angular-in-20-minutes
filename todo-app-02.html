@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Angular TodoApp - App using Routing</title>
+<link href="styles/animations.css" rel="stylesheet" />
+<style>
+.done-true {
+	text-decoration: line-through;
+	color: grey;
+}
+</style>
+</head>
+<body>
+	<h1>Angular TodoApp - Only Conttroller</h1>
+
+	<div ng-view class="slide-animation"></div>
+
+	<div ng-app>
+		<h2>Todo</h2>
+		<div ng-controller="TodoCtrl">
+			<span>{{remaining()}} of {{todos.length}} remaining</span> [ <a
+				href="" ng-click="archive()">archive</a> ]
+			<ul class="unstyled">
+				<li ng-repeat="todo in todos"><input type="checkbox"
+					ng-model="todo.done"> <span class="done-{{todo.done}}">{{todo.text}}</span>
+				</li>
+			</ul>
+			<form ng-submit="addTodo()">
+				<input type="text" ng-model="todoText" size="30"
+					placeholder="add new todo here"> <input class="btn-primary"
+					type="submit" value="add">
+			</form>
+		</div>
+	</div>
+	<script src="js/angular.js"></script>
+	<!--  script src="js/angular-route.js"></script>
+	<script src="js/angular-animation.js"></script  -->
+	<script src="todo/todo.js"></script>
+	<script>
+		console.log('iniciando o Controller "' + TodoCtrl.name + '".');
+	</script>
+</body>
+</html>

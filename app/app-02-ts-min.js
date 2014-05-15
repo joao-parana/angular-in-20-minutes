@@ -1,0 +1,1 @@
+var b;(function(c){(function(a){a[a.PRODUCTION=0]="PRODUCTION";a[a.TEST=1]="TEST";a[a.DEVELOPMENT=2]="DEVELOPMENT"})(c.a||(c.a={}));(function(){return function(){}})();var d=function(){return function(){this.b=[];this.b.authfire=angular.d("authfire",["ngRoute","ngAnimate"]);this.b.orders=angular.d("orders",["ngRoute","ngAnimate"])}}();c.c=d})(b||(b={}));new b.c(b.a.e);
