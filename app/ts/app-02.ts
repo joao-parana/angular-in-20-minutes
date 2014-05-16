@@ -30,36 +30,37 @@ module demo {
         }
         getOrder(customerId, orderId): ng.IPromise<any> {
             // Return a promise for AJAX Call
-            return this.$http.get('data/order-' + customerId + '-' + orderId
-                + '.json');
+            return this.$http.get('data/order-' + customerId + '-'
+                + orderId + '.json');
         }
     }
     class ItemFactory {
         constructor(private $http) {
         }
         getItem(customerId, orderId, itemNo) {
-            // Return a promise for AJAX Call but for now return 
-            // hard-coded object
-            var retObj = {
-                productName: 'Fake Name',
-                brand: 'Fake Brand',
-                model: 'Fake Model'
-            };
-            // emulando parcialmente uma interface ng.IPromise<any> 
+            // Must return a promise for AJAX Call but for  
+            // now is returning hard-coded object
             return {
-                success: function(callback) {
-                    callback(retObj);
+                success: (callback) => {
+                    callback({
+                        productName: 'Fake Name', brand: 'Brand'
+                        , model: 'Model'
+                    })
                 }
-            };
+            }
         }
     }
 
     export class App {
-        private modules = [];
+        private modules: any;
+        private version: string;
         constructor(private env: Env) {
-            this.env = env;
-            this.modules['authfire'] = angular.module('authfire', ['ngRoute', 'ngAnimate']);
-            this.modules['orders'] = angular.module('orders', ['ngRoute', 'ngAnimate']);
+            this.version = '1.0.0';
+            this.modules = {};
+            this.modules.authfire = angular.module('authfire'
+                , ['ngRoute', 'ngAnimate']);
+            this.modules.orders = angular.module('orders'
+                , ['ngRoute', 'ngAnimate']);
         }
         private buildRoutes() {
             var TEMPL_PREFIX = '';
@@ -67,100 +68,81 @@ module demo {
                 TEMPL_PREFIX = 'test/';
             }
             this.modules['orders'].config(function($routeProvider) {
-                $routeProvider.when('/', { // Default Route
+                $routeProvider.when('/', {  // Default Route
                     controller: 'CustomersController',
                     templateUrl: TEMPL_PREFIX + 'app/views/customers.html'
-                });
-                $routeProvider.when('/orders/:customerId', {
-                    controller: 'OrdersController',
-                    templateUrl: TEMPL_PREFIX + 'app/views/orders.html'
-                });
-                $routeProvider.when('/orders/:customerId/:orderId', {
-                    controller: 'OrderController',
-                    templateUrl: TEMPL_PREFIX + 'app/views/order.html'
-                });
-                $routeProvider.when('/item/:customerId/:orderId/:itemNo', {
-                    controller: 'ItemController',
-                    templateUrl: TEMPL_PREFIX + 'app/views/item.html'
-                });
+                }).when('/orders/:customerId', {
+                        controller: 'OrdersController',
+                        templateUrl: TEMPL_PREFIX + 'app/views/orders.html'
+                    }).when('/orders/:customerId/:orderId', {
+                        controller: 'OrderController',
+                        templateUrl: TEMPL_PREFIX + 'app/views/order.html'
+                    }).when('/item/:customerId/:orderId/:itemNo', {
+                        controller: 'ItemController',
+                        templateUrl: TEMPL_PREFIX + 'app/views/item.html'
+                    }).
+                    otherwise({
+                        redirectTo: '/error/404.html'
+                    });
             });
         }
         private buildControllers() {
-            this.modules['orders'].controller('CustomersController', function($scope, customersFactory) {
-                $scope.customers = null;
-
-                function init() {
+            this.modules['orders'].controller('CustomersController'
+                , function($scope, customersFactory) {
+                    $scope.customers = null;
                     customersFactory.getCustomers().success(function(custs) {
                         $scope.customers = custs;
-                        // console.log(custs);
                     });
-                }
-
-                init();
-            });
-            this.modules['orders'].controller('OrdersController', function($scope, $routeParams,
-                ordersFactory, orderFactory) {
-                // console.log($scope); // Class Scope
-                // console.log($routeParams);
-                $scope.customerId = $routeParams.customerId;
-
-                function updateScopeWithOrders() {
+                });
+            this.modules['orders'].controller('OrdersController'
+                , function($scope, $routeParams,
+                    ordersFactory, orderFactory) {
+                    // console.log($scope); // Class Scope
+                    // console.log($routeParams);
+                    $scope.customerId = $routeParams.customerId;
+                    var filtered = [];
+                    var filter = (elem) => { 
+                    return (elem.customerId == $scope.customerId)
+                    };
                     ordersFactory.getOrders().success(function(orders) {
-                        var filtered = [];
                         for (var i = 0; i < orders.length; i++) {
-                            if (orders[i].customerId == $scope.customerId) {
+                            if (filter(orders[i])) {
                                 filtered.push(orders[i]);
                             }
                         }
                         $scope.orders = filtered;
                     });
-                }
+                });
+            this.modules['orders'].controller('OrderController'
+                , function($scope, $routeParams,
+                    orderFactory) {
+                    console.log($routeParams);
+                    $scope.customerId = $routeParams.customerId;
+                    $scope.orderId = $routeParams.orderId;
+                    orderFactory.getOrder($scope.customerId, $scope.orderId)
+                        .success(function(order) {
+                            $scope.order = order;
+                        });
+                });
+            this.modules['orders'].controller('ItemController'
+                , function($scope, $routeParams, itemFactory) {
+                    console.log($routeParams);
+                    $scope.customerId = $routeParams.customerId;
+                    $scope.orderId = $routeParams.orderId;
+                    $scope.itemNo = $routeParams.itemNo;
 
-                updateScopeWithOrders();
-            });
-            this.modules['orders'].controller('OrderController', function($scope, $routeParams,
-                orderFactory) {
-                console.log($routeParams);
-                // console.log(orderFactory);
-                var customerId = $routeParams.customerId;
-                var orderId = $routeParams.orderId;
-                $scope.customerId = customerId;
-                $scope.orderId = orderId;
-
-                function updateScopeWithOrder(customerId, orderId) {
-                    orderFactory.getOrder(customerId, orderId).success(function(order) {
-                        $scope.order = order;
-                        // console.log(order);
-                    });
-                }
-
-                updateScopeWithOrder(customerId, orderId);
-            });
-            this.modules['orders'].controller('ItemController', function($scope, $routeParams, itemFactory) {
-                console.log($routeParams);
-                // console.log(orderFactory);
-                var customerId = $routeParams.customerId;
-                var orderId = $routeParams.orderId;
-                var itemNo = $routeParams.itemNo;
-                $scope.customerId = customerId;
-                $scope.orderId = orderId;
-                $scope.itemNo = itemNo;
-
-                function updateScopeWithItem(customerId, orderId, itemNo) {
-                    itemFactory.getItem(customerId, orderId, itemNo).success(
+                    itemFactory.getItem($scope.customerId, $scope.orderId
+                        , $scope.itemNo).success(
                         function(item) {
                             $scope.item = item;
-                            // console.log(item);
                         });
-                }
-
-                updateScopeWithItem(customerId, orderId, itemNo);
-            });
+                });
         }
         private buildFactories() {
-            this.modules['orders'].factory('customersFactory', function($http) {
-                return new CustomersFactory($http);
-            });
+            this.modules['orders'].factory('customersFactory'
+                , function($http) {
+                    return new CustomersFactory($http);
+                });
 
             this.modules['orders'].factory('ordersFactory', function($http) {
                 return new OrdersFactory($http);
@@ -174,8 +156,17 @@ module demo {
                 return new ItemFactory($http);
             });
         }
+
         public getEnv() { return this.env; }
+
+        public start() {
+            this.buildRoutes();
+            this.buildControllers()
+            this.buildFactories();
+        }
     }
 }
 
-var myDemoApp = new demo.App(demo.Env.PRODUCTION); 
+var myDemoApp = new demo.App(demo.Env.PRODUCTION);
+console.log('ENVIRONMENT = ' + myDemoApp.getEnv())
+myDemoApp.start();
