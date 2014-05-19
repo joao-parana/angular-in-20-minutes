@@ -183,7 +183,8 @@ module demo {
 }
 
 var myDemoApp = new demo.App(demo.Env.DEVELOPMENT);
-var myDemoAppEnvironment = demo.Env[myDemoApp.getEnv()];
-var myDemoAppReferences = [myDemoApp.getVersion(), myDemoApp.getEnvName()
+// Uso efeito colateral apenas para o Clousure Compiler 
+// não remover o código das funções na otimização 
+var myCollateral = [myDemoApp.getVersion(), myDemoApp.getEnvName()
     , myDemoApp.getModules()['orders'].name, myDemoAppEnvironment];
 myDemoApp.start();
