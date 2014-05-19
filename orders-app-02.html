@@ -33,10 +33,16 @@ span.label {
 	width: 70px;
 	display: inline-block;
 }
+
+p.test-title {
+	border: 2px solid red;
+	padding-left: 10px;
+	margin-right: 10px;
+}
 </style>
 </head>
 <body>
-	<h1>AngularJS in 20-ish Minutes</h1>
+	<h1>AngularJS Custumers App</h1>
 
 	<div ng-view class="slide-animation"></div>
 
@@ -46,12 +52,12 @@ span.label {
 	<!--  http://angular-ui.github.io/bootstrap/  -->
 	<script src="js/ui-bootstrap-tpls-0.11.0.js"></script>
 	<!--  minha App -->
-	<script src="app/app-02-ts.js"></script>
+	<script src="app/app-02-ts-min.js.gz"></script>
 	<script>
-		console.log('iniciando aplicação. {' 
-				+ 'Version: ' + myDemoApp.version 
-				+ ', Modules : [ "' 
-				+ myDemoApp.modules.orders.name + '" ] }');
+		console.log('iniciando aplicaÃ§Ã£o. {' + 'Version: '
+				+ myDemoApp.getVersion() + ', Modules : [ "'
+				+ myDemoApp.getModules().orders.name + '" ] }');
+		console.log('ENVIRONMENT = ' + myDemoApp.getEnvName());
 	</script>
 </body>
 </html>

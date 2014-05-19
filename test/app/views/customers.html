@@ -1,6 +1,8 @@
+<!--  Teste Unitário de Customers -->
+<p class="test-title">Teste Unitário de Customers</p>
 <input type="text" ng-model="searchText.name">
 <div ng-repeat="cust in customers | filter:searchText | orderBy:'name'">
-	<span>#/orders/{{ cust.id }}"</span><span>{{ cust.name }}</span> <span>{{
+	<span>#/orders/{{ cust.id }}"</span> <span>{{ cust.name }}</span> <span>{{
 		cust.total | currency }}</span>
 </div>
 <!-- Pagina de teste é HTML CRÚ sem formatação -->
