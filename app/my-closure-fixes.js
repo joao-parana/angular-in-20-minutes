@@ -59,11 +59,6 @@ myDemoApp.start = function() { };
 /**
  * @type {Object}
  */
-var myDemoAppEnvironment = {};
-
-/**
- * @type {Object}
- */
 var $scope = {};
 $scope.customers = {};
 $scope.customerId = {};
@@ -72,6 +67,52 @@ $scope.order = {};
 $scope.orderId = {};
 $scope.orders = {};
 
+/**
+ * @type {Object}
+ */
+var item = {};
+item.productName = {};
+item.brand = {};
+item.model = {}; 
+
+/**
+ * @type {Object}
+ */
+var itemOfOrder = {};
+itemOfOrder.itemNo = 1;
+itemOfOrder.qty = 1.0;
+itemOfOrder.productName = '';
+itemOfOrder.value = 1.1;
+
+/**
+ * @type {Object}
+ */
+var order = {};
+order.id = 1;
+order.orderDate = 1;
+order.customerId = 1;
+order.name = '';
+order.total = 1.1;
+order.itens = []; // array de itemOfOrder
+/**
+ * @type {Object}
+ */
+var orders = []; // array de order
+
+/**
+ * @type {Object}
+ */
+var customer = {};
+customer.id = 1;
+customer.name = '';
+customer.total = 1.1;
+
+/**
+ * @type {Object}
+ */
+var customers = []; // array de customer
+	
+	
 
 
 
