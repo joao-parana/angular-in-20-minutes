@@ -3,7 +3,7 @@
 /// <reference path="angular-route.d.ts" />
 /// <reference path="common.ts" />
 
-module demo2 {
+module demo3 {
     "use strict";
     class CustomersFactory {
         constructor(private $http) {
@@ -52,51 +52,52 @@ module demo2 {
         private version: string;
         constructor(private env: common.Env) {
             this.version = '1.0.0';
-            this.modules = {};
-            this.modules['authfire'] = angular.module('authfire'
+
+            angular.module('authfire'
                 , ['ngRoute', 'ngAnimate']);
-            this.modules['orders'] = angular.module('orders'
+            angular.module('orders'
                 , ['ngRoute', 'ngAnimate']);
+            this.modules = [angular.module('authfire')
+                , angular.module('orders')];
         }
         private buildRoutes() {
             var TEMPL_PREFIX = '';
             if (this.env == common.Env.TEST) {
                 TEMPL_PREFIX = 'test/';
             }
-            // console.log(this.modules);
-            this.modules['orders'].config(
-                ['$routeProvider', '$locationProvider'
-                    , function($routeProvider, $locationProvider) {
-                        $routeProvider.when('/', {  // Default Route
-                            controller: 'CustomersController',
-                            templateUrl: TEMPL_PREFIX + 'app/views/customers.html'/*,
-                        resolve: { data: dataLoaderRunner }*/
-                        }).when('/orders/:customerId', {
-                                controller: 'OrdersController',
-                                templateUrl: TEMPL_PREFIX + 'app/views/orders.html'
-                            }).when('/orders/:customerId/:orderId', {
-                                controller: 'OrderController',
-                                templateUrl: TEMPL_PREFIX + 'app/views/order.html'
-                            }).when('/item/:customerId/:orderId/:itemNo', {
-                                controller: 'ItemController',
-                                templateUrl: TEMPL_PREFIX + 'app/views/item.html'
-                            }).
-                            otherwise({
-                                redirectTo: 'app/views/404.html'
-                            });
-                    }]);
+
+            angular.module('orders').config(
+                function($routeProvider, $locationProvider) {
+                    $routeProvider.when('/', {  // Default Route
+                        controller: 'CustomersController',
+                        templateUrl: TEMPL_PREFIX + 'app/views/customers.html'
+                        /*, resolve: { data: dataLoaderRunner }*/
+                    }).when('/orders/:customerId', {
+                            controller: 'OrdersController',
+                            templateUrl: TEMPL_PREFIX + 'app/views/orders.html'
+                        }).when('/orders/:customerId/:orderId', {
+                            controller: 'OrderController',
+                            templateUrl: TEMPL_PREFIX + 'app/views/order.html'
+                        }).when('/item/:customerId/:orderId/:itemNo', {
+                            controller: 'ItemController',
+                            templateUrl: TEMPL_PREFIX + 'app/views/item.html'
+                        }).
+                        otherwise({
+                            redirectTo: 'app/views/404.html'
+                        });
+                });
         }
         private buildControllers() {
-            this.modules['orders'].controller('CustomersController'
-                , ['$scope', 'customersFactory', function(
+            angular.module('orders').controller('CustomersController',
+                function(
                     $scope, customersFactory) {
                     $scope.customers = null;
                     customersFactory.getCustomers().success(function(custs) {
                         $scope.customers = custs;
                     });
-                }]);
-            this.modules['orders'].controller('OrdersController'
-                , ['$scope', '$routeParams', 'ordersFactory', 'orderFactory', function(
+                });
+            angular.module('orders').controller('OrdersController'
+                , function(
                     $scope, $routeParams, ordersFactory, orderFactory) {
                     // console.log($scope); // Class Scope
                     // console.log($routeParams);
@@ -113,9 +114,9 @@ module demo2 {
                         }
                         $scope.orders = filtered;
                     });
-                }]);
-            this.modules['orders'].controller('OrderController'
-                , ['$scope', '$routeParams', 'orderFactory', function(
+                });
+            angular.module('orders').controller('OrderController'
+                , function(
                     $scope, $routeParams, orderFactory) {
                     // console.log($routeParams);
                     $scope.customerId = $routeParams.customerId;
@@ -124,9 +125,9 @@ module demo2 {
                         .success(function(order) {
                             $scope.order = order;
                         });
-                }]);
-            this.modules['orders'].controller('ItemController'
-                , ['$scope', '$routeParams', 'itemFactory', function(
+                });
+            angular.module('orders').controller('ItemController'
+                , function(
                     $scope, $routeParams, itemFactory) {
                     // console.log($routeParams);
                     $scope.customerId = $routeParams.customerId;
@@ -138,28 +139,27 @@ module demo2 {
                         function(item) {
                             $scope.item = item;
                         });
-                }]);
+                });
         }
         private buildFactories() {
-            this.modules['orders'].factory('customersFactory'
-                , ['$http', function($http) {
-                    return new CustomersFactory($http);
-                }]);
-
-            this.modules['orders'].factory('ordersFactory'
-                , ['$http', function($http) {
-                    return new OrdersFactory($http);
-                }]);
-
-            this.modules['orders'].factory('orderFactory'
-                , ['$http', function($http) {
-                    return new OrderFactory($http);
-                }]);
-
-            this.modules['orders'].factory('itemFactory', ['$http'
+            angular.module('orders').factory('customersFactory'
                 , function($http) {
-                    return new ItemFactory($http);
-                }]);
+                    return new CustomersFactory($http);
+                });
+
+            angular.module('orders').factory('ordersFactory'
+                , function($http) {
+                    return new OrdersFactory($http);
+                });
+
+            angular.module('orders').factory('orderFactory'
+                , function($http) {
+                    return new OrderFactory($http);
+                });
+
+            angular.module('orders').factory('itemFactory', function($http) {
+                return new ItemFactory($http);
+            });
         }
 
         public getEnv() { return this.env; }
@@ -178,9 +178,9 @@ module demo2 {
     }
 }
 
-var myDemoApp = new demo2.App(common.Env.DEVELOPMENT);
+var myDemoApp = new demo3.App(common.Env.DEVELOPMENT);
 // Uso efeito colateral apenas para o Clousure Compiler 
 // não remover o código das funções na otimização 
 var myCollateral = [myDemoApp.getVersion(), myDemoApp.getEnvName()
-    , myDemoApp.getModules()['orders'].name];
+    , myDemoApp.getModules().orders.name];
 myDemoApp.start();

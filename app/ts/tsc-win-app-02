@@ -1,5 +1,5 @@
 set -x
-tsc app-02.ts 
+tsc --out app-02.js common.ts  app-02.ts
 cp app-02.js ../app-02-ts.js
 cd .. 
 export GOOG_HOME=/c/usr/docs/closure-library

@@ -1,0 +1,8 @@
+set -x
+tsc --out app-03.js common.ts  app-03.ts
+ngmin app-03.js app-03-ngmin.js
+cp app-03-ngmin.js ../app-03-ts.js
+cd .. 
+export GOOG_HOME=/c/usr/docs/closure-library
+java -jar $GOOG_HOME/compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS  --js app-03-ts.js  --js_output_file app-03-ts-min.js --externs 'ng-closure-fixes.js'  --externs 'my-closure-fixes.js'
+gzip -9 -c app-03-ts-min.js > app-03-ts-min.js.gz

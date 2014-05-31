@@ -1,0 +1,63 @@
+<!--
+   AngularJS in 20-ish Minutes
+   Dan Wahlin
+
+   @DanWahlin
+   http://weblogs.asp.net/dwahlin
+   
+   1. Data Binding and Directives
+   2. Filters
+   3. Modules and Controllers
+   4. Routes
+   5. Factories
+-->
+<!DOCTYPE html>
+<html ng-app="orders">
+<head>
+<title>Angular App</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="styles/animations.css" rel="stylesheet" />
+<style>
+table {
+	width: 500px;
+	/*display: inline-block;*/
+}
+
+tr>td,tr>th {
+	width: 70px;
+	display: inline-block;
+	margin-left: 30px;
+}
+
+span.label {
+	width: 70px;
+	display: inline-block;
+}
+
+p.test-title {
+	border: 2px solid red;
+	padding-left: 10px;
+	margin-right: 10px;
+}
+</style>
+</head>
+<body>
+	<h1>AngularJS Custumers App Using ngMin Utility</h1>
+
+	<div ng-view class="slide-animation"></div>
+
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script src="js/angular-animation.js"></script>
+	<!--  http://angular-ui.github.io/bootstrap/  -->
+	<script src="js/ui-bootstrap-tpls-0.11.0.js"></script>
+	<!--  minha App -->
+	<script src="app/app-03-ts-min.js.gz"></script>
+	<script>
+		console.log('iniciando aplicação. {' + 'Version: '
+				+ myDemoApp.getVersion() + ', Modules : [ "'
+				+ myDemoApp.getModules().orders.name + '" ] }');
+		console.log('ENVIRONMENT = ' + myDemoApp.getEnvName());
+	</script>
+</body>
+</html>

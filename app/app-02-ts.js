@@ -1,15 +1,20 @@
-/// <reference path="angular.d.ts" />
-/// <reference path="angular-resource.d.ts" />
-/// <reference path="angular-route.d.ts" />
-var demo;
-(function (demo) {
+var common;
+(function (common) {
     "use strict";
     (function (Env) {
         Env[Env["PRODUCTION"] = 0] = "PRODUCTION";
         Env[Env["TEST"] = 1] = "TEST";
         Env[Env["DEVELOPMENT"] = 2] = "DEVELOPMENT";
-    })(demo.Env || (demo.Env = {}));
-    var Env = demo.Env;
+    })(common.Env || (common.Env = {}));
+    var Env = common.Env;
+})(common || (common = {}));
+/// <reference path="angular.d.ts" />
+/// <reference path="angular-resource.d.ts" />
+/// <reference path="angular-route.d.ts" />
+/// <reference path="common.ts" />
+var demo2;
+(function (demo2) {
+    "use strict";
     var CustomersFactory = (function () {
         function CustomersFactory($http) {
             this.$http = $http;
@@ -70,13 +75,15 @@ var demo;
         }
         App.prototype.buildRoutes = function () {
             var TEMPL_PREFIX = '';
-            if (this.env == Env.TEST) {
+            if (this.env == common.Env.TEST) {
                 TEMPL_PREFIX = 'test/';
             }
-            console.log(this.modules);
+
+            // console.log(this.modules);
             this.modules['orders'].config([
                 '$routeProvider',
-                function ($routeProvider) {
+                '$locationProvider',
+                function ($routeProvider, $locationProvider) {
                     $routeProvider.when('/', {
                         controller: 'CustomersController',
                         templateUrl: TEMPL_PREFIX + 'app/views/customers.html'
@@ -134,7 +141,7 @@ var demo;
                 '$routeParams',
                 'orderFactory',
                 function ($scope, $routeParams, orderFactory) {
-                    console.log($routeParams);
+                    // console.log($routeParams);
                     $scope.customerId = $routeParams.customerId;
                     $scope.orderId = $routeParams.orderId;
                     orderFactory.getOrder($scope.customerId, $scope.orderId).success(function (order) {
@@ -147,7 +154,7 @@ var demo;
                 '$routeParams',
                 'itemFactory',
                 function ($scope, $routeParams, itemFactory) {
-                    console.log($routeParams);
+                    // console.log($routeParams);
                     $scope.customerId = $routeParams.customerId;
                     $scope.orderId = $routeParams.orderId;
                     $scope.itemNo = $routeParams.itemNo;
@@ -193,7 +200,7 @@ var demo;
         };
 
         App.prototype.getEnvName = function () {
-            return Env[this.env];
+            return common.Env[this.env];
         };
 
         App.prototype.getVersion = function () {
@@ -211,15 +218,16 @@ var demo;
         };
         return App;
     })();
-    demo.App = App;
-})(demo || (demo = {}));
+    demo2.App = App;
+})(demo2 || (demo2 = {}));
 
-var myDemoApp = new demo.App(demo.Env.DEVELOPMENT);
-var myDemoAppEnvironment = demo.Env[myDemoApp.getEnv()];
-var myDemoAppReferences = [
+var myDemoApp = new demo2.App(common.Env.DEVELOPMENT);
+
+// Uso efeito colateral apenas para o Clousure Compiler
+// não remover o código das funções na otimização
+var myCollateral = [
     myDemoApp.getVersion(),
     myDemoApp.getEnvName(),
-    myDemoApp.getModules()['orders'].name,
-    myDemoAppEnvironment
+    myDemoApp.getModules()['orders'].name
 ];
 myDemoApp.start();
